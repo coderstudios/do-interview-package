@@ -2,6 +2,7 @@
 
 use CoderStudios\DoInterview\Brief\Renderers\GptLiveBriefRenderer;
 use CoderStudios\DoInterview\Content\ContentRepository;
+use CoderStudios\DoInterview\DoInterviewServiceProvider;
 use Illuminate\Support\Facades\File;
 
 /** A host content folder in a temp dir, put first in the content paths. */
@@ -11,7 +12,7 @@ function hostContent(): string
     File::ensureDirectoryExists("{$dir}/scenarios");
     File::ensureDirectoryExists("{$dir}/prompts/gpt-live");
 
-    config()->set('do-interview.content.paths', [$dir, __DIR__.'/../../resources/examples']);
+    config()->set('do-interview.content.paths', [$dir]);
     app()->forgetInstance(ContentRepository::class);
     app('view')->replaceNamespace('do-interview-prompts', app(ContentRepository::class)->promptPaths());
 
@@ -80,3 +81,19 @@ it('refuses a host template that drops the AI disclosure', function () {
 
     app(GptLiveBriefRenderer::class)->render(spikeBrief());
 })->throws(RuntimeException::class, 'AI disclosure');
+
+it('adds the package examples itself, so a published config works from any folder', function () {
+    config()->set('do-interview.content.paths', ['/nowhere/config/../resources/do-interview']);
+    app()->forgetInstance(ContentRepository::class);
+
+    expect(app(ContentRepository::class)->paths())->toContain(DoInterviewServiceProvider::EXAMPLES)
+        ->and(app(ContentRepository::class)->scenario('sample-apprenticeship')->scenario)->toBe('apprenticeship_interview');
+});
+
+it('can be told to use the host content only', function () {
+    config()->set('do-interview.content.paths', ['/nowhere']);
+    config()->set('do-interview.content.examples', false);
+    app()->forgetInstance(ContentRepository::class);
+
+    app(ContentRepository::class)->scenario('sample-apprenticeship');
+})->throws(InvalidArgumentException::class, 'No scenario called "sample-apprenticeship"');

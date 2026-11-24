@@ -35,7 +35,8 @@ return [
     /*
     | Scenarios and prompt templates are the product's own content, so they live in the host
     | app, not in this public package. Each path is searched in order; the first match wins.
-    | The package's examples come last so a fresh install runs. Layout under each path:
+    | The package's own examples are always searched last, so a fresh install runs; set
+    | `examples` to false to require the host's content. Layout under each path:
     |   scenarios/{name}.json
     |   prompts/{driver}/{template}.blade.php   e.g. prompts/gpt-live/interviewer.blade.php
     | DO_INTERVIEW_CONTENT_PATH points the host's path elsewhere, such as a private content repo.
@@ -43,8 +44,8 @@ return [
     'content' => [
         'paths' => [
             env('DO_INTERVIEW_CONTENT_PATH', resource_path('do-interview')),
-            __DIR__.'/../resources/examples',
         ],
+        'examples' => (bool) env('DO_INTERVIEW_CONTENT_EXAMPLES', true),
     ],
 
     /*

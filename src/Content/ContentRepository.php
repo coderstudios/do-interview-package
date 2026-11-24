@@ -24,10 +24,10 @@ final class ContentRepository
      */
     public function __construct(array $paths)
     {
-        $this->paths = array_values(array_filter(array_map(
+        $this->paths = array_values(array_unique(array_filter(array_map(
             fn (mixed $p) => rtrim((string) $p, '/'),
             $paths,
-        )));
+        ))));
     }
 
     /**

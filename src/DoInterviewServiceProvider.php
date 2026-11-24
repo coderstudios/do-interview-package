@@ -13,13 +13,18 @@ use Illuminate\View\Factory as ViewFactory;
 
 final class DoInterviewServiceProvider extends ServiceProvider
 {
+    public const EXAMPLES = __DIR__.'/../resources/examples';
+
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/do-interview.php', 'do-interview');
 
-        $this->app->singleton(ContentRepository::class, fn ($app) => new ContentRepository(
-            array_values((array) $app['config']->get('do-interview.content.paths', [])),
-        ));
+        // The examples path is added here, not in the config file: a host's published copy of the
+        // config lives in its own config/ folder, where __DIR__ would point somewhere else.
+        $this->app->singleton(ContentRepository::class, fn ($app) => new ContentRepository([
+            ...array_values((array) $app['config']->get('do-interview.content.paths', [])),
+            ...($app['config']->get('do-interview.content.examples', true) ? [self::EXAMPLES] : []),
+        ]));
         $this->app->singleton(VoiceManager::class, fn ($app) => new VoiceManager($app));
         $this->app->bind(VoiceProvider::class, fn ($app) => $app->make(VoiceManager::class)->driver());
     }
