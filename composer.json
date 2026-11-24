@@ -1,0 +1,58 @@
+{
+    "name": "coderstudios/do-interview",
+    "description": "Researched, voice-based practice interviews with written debriefs, as a Laravel package.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.3",
+        "illuminate/http": "^13.0",
+        "illuminate/routing": "^13.0",
+        "illuminate/support": "^13.0",
+        "illuminate/view": "^13.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.9",
+        "laravel/pint": "^1.27",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^4.1",
+        "pestphp/pest-plugin-laravel": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoderStudios\\DoInterview\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoderStudios\\DoInterview\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CoderStudios\\DoInterview\\DoInterviewServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -r \"@unlink('vendor/orchestra/testbench-core/laravel/.env');\"",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "lint": "pint --parallel",
+        "test": [
+            "pint --parallel --test",
+            "phpstan analyse --memory-limit=1G --no-progress",
+            "pest"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

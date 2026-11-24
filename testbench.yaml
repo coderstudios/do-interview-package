@@ -1,0 +1,11 @@
+# Testbench boots a bare Laravel app around the package, for `composer serve` and for Larastan.
+# Set OPENAI_API_KEY and APP_KEY in your shell before `composer serve` (see README.md).
+providers:
+  - CoderStudios\DoInterview\DoInterviewServiceProvider
+
+env:
+  - DO_INTERVIEW_SPIKE=true
+  # Local only: the bare app has no login, so the spike runs without the auth middleware here.
+  - DO_INTERVIEW_SPIKE_MIDDLEWARE=web
+  - SESSION_DRIVER=file
+  - CACHE_STORE=file

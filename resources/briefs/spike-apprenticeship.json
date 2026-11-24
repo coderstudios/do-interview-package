@@ -1,0 +1,26 @@
+{
+  "scenario": "apprenticeship_interview",
+  "organisation": "Northfield Engineering (a fictional regional engineering firm)",
+  "role": "Level 3 Engineering Technician apprenticeship",
+  "persona": { "name": "Sam", "style": "friendly but probing" },
+  "disclosure": "I'm an AI interviewer. This is a practice session, and nothing you say here is shared with an employer.",
+  "duration_minutes": 5,
+  "questions": [
+    { "id": "q1", "text": "Tell me a bit about yourself and why this apprenticeship appeals to you.", "probes": ["What first got you interested in engineering?", "Why an apprenticeship rather than college or university?"], "rubric_tags": ["motivation"] },
+    { "id": "q2", "text": "Tell me about a time you worked with other people to get something done.", "probes": ["What was your part in it?", "What would you do differently next time?"], "rubric_tags": ["teamwork"] },
+    { "id": "q3", "text": "Describe a problem you solved, at school, at home or in a hobby, where the answer wasn't obvious at first.", "probes": ["How did you work out what to try?", "What did you learn from it?"], "rubric_tags": ["problem_solving"] },
+    { "id": "q4", "text": "Apprentices split their week between work and study. How would you manage that?", "probes": ["How do you keep on top of deadlines now?"], "rubric_tags": ["communication", "motivation"] }
+  ],
+  "rubric": [
+    { "tag": "motivation", "levels": { "1": "Vague or generic reasons", "3": "Clear reasons with one specific example", "5": "Specific, personal reasons linked to the role and the firm" } },
+    { "tag": "teamwork", "levels": { "1": "No clear example", "3": "A real example with their own role described", "5": "A real example, their own role, and what they learned" } },
+    { "tag": "problem_solving", "levels": { "1": "Describes the outcome only", "3": "Explains the steps they took", "5": "Explains the steps, the reasoning, and what they would change" } },
+    { "tag": "communication", "levels": { "1": "Hard to follow", "3": "Clear, mostly on topic", "5": "Clear, concise and well structured" } }
+  ],
+  "boundaries": [
+    "stay in role as the interviewer",
+    "no personal questions beyond the brief",
+    "stop if the user is distressed"
+  ],
+  "sources": []
+}

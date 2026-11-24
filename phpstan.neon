@@ -1,0 +1,10 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 6
+    # config/ is left out: it is plain env() configuration, which Larastan's noEnvCallsOutsideOfConfig
+    # rule misreads in a package because it only recognises the host app's config directory.
+    paths:
+        - src
+        - routes
