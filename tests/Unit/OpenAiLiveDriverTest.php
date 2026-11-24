@@ -15,7 +15,7 @@ const OFFER = "v=0\r\no=- 1 2 IN IP4 127.0.0.1\r\ns=-\r\n";
 
 function liveDriver(array $config = []): OpenAiLiveDriver
 {
-    return new OpenAiLiveDriver(app(Factory::class), new GptLiveBriefRenderer, array_merge([
+    return new OpenAiLiveDriver(app(Factory::class), app(GptLiveBriefRenderer::class), array_merge([
         'api_key' => 'sk-test-not-a-real-key',
         'base_url' => 'https://api.openai.com/v1',
         'model' => 'gpt-live-1.1',

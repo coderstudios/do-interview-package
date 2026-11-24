@@ -27,7 +27,7 @@ final class VoiceManager extends Manager
     {
         return new OpenAiLiveDriver(
             $this->container->make(Http::class),
-            new GptLiveBriefRenderer,
+            $this->container->make(GptLiveBriefRenderer::class),
             (array) $this->config->get('do-interview.providers.openai-live', []),
         );
     }

@@ -2,7 +2,7 @@
     "name": "coderstudios/do-interview",
     "description": "Researched, voice-based practice interviews with written debriefs, as a Laravel package.",
     "type": "library",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": "^8.3",
         "illuminate/http": "^13.0",

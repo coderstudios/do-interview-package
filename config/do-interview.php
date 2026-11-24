@@ -33,6 +33,21 @@ return [
     ],
 
     /*
+    | Scenarios and prompt templates are the product's own content, so they live in the host
+    | app, not in this public package. Each path is searched in order; the first match wins.
+    | The package's examples come last so a fresh install runs. Layout under each path:
+    |   scenarios/{name}.json
+    |   prompts/{driver}/{template}.blade.php   e.g. prompts/gpt-live/interviewer.blade.php
+    | DO_INTERVIEW_CONTENT_PATH points the host's path elsewhere, such as a private content repo.
+    */
+    'content' => [
+        'paths' => [
+            env('DO_INTERVIEW_CONTENT_PATH', resource_path('do-interview')),
+            __DIR__.'/../resources/examples',
+        ],
+    ],
+
+    /*
     | The M0 voice spike: a five-minute interview from a fixed brief. Off unless switched on.
     | The page calls a paid API on every start, so keep it behind login (the default) in any
     | shared environment. DO_INTERVIEW_SPIKE_MIDDLEWARE takes a comma-separated list.
@@ -43,7 +58,8 @@ return [
         'middleware' => array_values(array_filter(array_map('trim', explode(',', (string) env('DO_INTERVIEW_SPIKE_MIDDLEWARE', 'web,auth'))))),
         'max_seconds' => (int) env('DO_INTERVIEW_SPIKE_MAX_SECONDS', 300),
         'starts_per_hour' => (int) env('DO_INTERVIEW_SPIKE_STARTS_PER_HOUR', 10),
-        'brief' => env('DO_INTERVIEW_SPIKE_BRIEF', __DIR__.'/../resources/briefs/spike-apprenticeship.json'),
+        // A scenario name from the content paths above.
+        'scenario' => env('DO_INTERVIEW_SPIKE_SCENARIO', 'sample-apprenticeship'),
     ],
 
 ];

@@ -3,6 +3,7 @@
 namespace CoderStudios\DoInterview\Http\Controllers;
 
 use CoderStudios\DoInterview\Brief\InterviewBrief;
+use CoderStudios\DoInterview\Content\ContentRepository;
 use CoderStudios\DoInterview\Contracts\VoiceProvider;
 use CoderStudios\DoInterview\Voice\SessionOptions;
 use CoderStudios\DoInterview\Voice\VoiceProviderException;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Validator;
  */
 final class SpikeController
 {
+    public function __construct(private readonly ContentRepository $content) {}
+
     public function show(VoiceProvider $voice, ViewFactory $views): View
     {
         $brief = $this->brief();
@@ -66,7 +69,7 @@ final class SpikeController
 
     private function brief(): InterviewBrief
     {
-        return InterviewBrief::fromJsonFile((string) config('do-interview.spike.brief'));
+        return $this->content->scenario((string) config('do-interview.spike.scenario', 'sample-apprenticeship'));
     }
 
     private function maxSeconds(InterviewBrief $brief): int

@@ -13,21 +13,21 @@ it('loads the spike brief', function () {
 });
 
 it('rejects a brief with a missing field', function () {
-    $data = json_decode(file_get_contents(__DIR__.'/../../resources/briefs/spike-apprenticeship.json'), true);
+    $data = json_decode(file_get_contents(__DIR__.'/../../resources/examples/scenarios/sample-apprenticeship.json'), true);
     unset($data['disclosure']);
 
     InterviewBrief::fromArray($data);
 })->throws(InvalidArgumentException::class, 'missing "disclosure"');
 
 it('rejects a brief without questions', function () {
-    $data = json_decode(file_get_contents(__DIR__.'/../../resources/briefs/spike-apprenticeship.json'), true);
+    $data = json_decode(file_get_contents(__DIR__.'/../../resources/examples/scenarios/sample-apprenticeship.json'), true);
     $data['questions'] = [];
 
     InterviewBrief::fromArray($data);
 })->throws(InvalidArgumentException::class, 'at least one question');
 
 it('rejects a blank AI disclosure', function () {
-    $data = json_decode(file_get_contents(__DIR__.'/../../resources/briefs/spike-apprenticeship.json'), true);
+    $data = json_decode(file_get_contents(__DIR__.'/../../resources/examples/scenarios/sample-apprenticeship.json'), true);
     $data['disclosure'] = '  ';
 
     InterviewBrief::fromArray($data);
@@ -35,7 +35,7 @@ it('rejects a blank AI disclosure', function () {
 
 it('renders GPT-Live instructions that carry the whole brief', function () {
     $brief = spikeBrief();
-    $instructions = (new GptLiveBriefRenderer)->render($brief);
+    $instructions = app(GptLiveBriefRenderer::class)->render($brief);
 
     expect($instructions)
         ->toContain($brief->disclosure)
@@ -52,13 +52,13 @@ it('renders GPT-Live instructions that carry the whole brief', function () {
 });
 
 it('keeps the marking scheme out of the interviewer instructions', function () {
-    $instructions = (new GptLiveBriefRenderer)->render(spikeBrief());
+    $instructions = app(GptLiveBriefRenderer::class)->render(spikeBrief());
 
     expect($instructions)->not->toContain('Specific, personal reasons linked to the role');
 });
 
 it('stays well inside the GPT-Live instruction limit', function () {
-    $instructions = (new GptLiveBriefRenderer)->render(spikeBrief());
+    $instructions = app(GptLiveBriefRenderer::class)->render(spikeBrief());
 
     // About four characters a token; the limit is 16,384 tokens.
     expect(strlen($instructions) / 4)->toBeLessThan(16384 / 4);
